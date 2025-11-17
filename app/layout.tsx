@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Bai_Jamjuree } from "next/font/google";
 import "./globals.css";
+import Navbar from "@/components/layouts/Navbar";
+import Footer from "@/components/layouts/Footer";
 
 const bai_Jamjuree = Bai_Jamjuree({
   subsets: ["latin"],
@@ -24,7 +26,10 @@ export default function RootLayout({
       <body
         className={`${bai_Jamjuree.className} antialiased`}
       >
+        <Navbar />
         {children}
+        <Footer />
+        
       </body>
     </html>
   );
