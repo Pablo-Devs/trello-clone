@@ -15,32 +15,29 @@ import { LucideIcon, Menu } from "lucide-react";
 import { dropdownContent, navOrder } from "@/constants";
 
 export default function Header() {
-
   return (
     <header className="flex items-center justify-between shadow-lg z-9999 px-3">
       <div className="flex items-center gap-6">
         <Link className="py-2" href="/">
           <TrelloLogo />
         </Link>
-
         {/* Desktop Navigation */}
-        <NavigationMenu className="hidden lg:block max-w-dvw w-full">
+        <NavigationMenu className="hidden lg:block">
           <NavigationMenuList className="flex gap-2">
             {navOrder.map((item) => {
               if (item.type === "dropdown") {
                 const key = item.key;
                 const items = dropdownContent[key];
-
+                console.log(items);
                 return (
                   <NavigationMenuItem key={key}>
                     <NavigationMenuTrigger className="text-foreground hover:text-primary text-base font-medium data-[state=open]:text-primary">
                       {item.key}
                     </NavigationMenuTrigger>
-                    <NavigationMenuContent className="left-0! right-0! w-dvw!">
+                    <NavigationMenuContent className="overflow-visible!">
                       <ul className="grid grid-cols-3 gap-4 p-6 text-left">
                         {items.map((menuItem, index) => {
                           const Icon = menuItem.icon as LucideIcon | null;
-
                           return (
                             <li key={index}>
                               <NavigationMenuLink asChild>
@@ -71,7 +68,6 @@ export default function Header() {
                   </NavigationMenuItem>
                 );
               }
-
               if (item.type === "link") {
                 return (
                   <NavigationMenuItem key={item.key}>
@@ -84,13 +80,11 @@ export default function Header() {
                   </NavigationMenuItem>
                 );
               }
-
               return null;
             })}
           </NavigationMenuList>
         </NavigationMenu>
       </div>
-
       <div className="hidden lg:flex items-center gap-4">
         <Button
           className="bg-transparent text-foreground hover:text-primary cursor-pointer text-base hover:bg-transparent shadow-none"
@@ -105,7 +99,6 @@ export default function Header() {
           <Link href="#">Get Trello for free</Link>
         </Button>
       </div>
-
       {/* Mobile Menu */}
       <Sheet>
         <SheetTrigger asChild className="lg:hidden">
