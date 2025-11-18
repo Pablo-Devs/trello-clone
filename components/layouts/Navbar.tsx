@@ -2,173 +2,163 @@
 
 import Link from "next/link";
 import { Button } from "../ui/button";
-import { ChevronDown, ChevronRight, Menu, X } from "lucide-react";
-import { useState } from "react";
+import { Menu, X } from "lucide-react";
+import { useState, useRef, useEffect } from "react";
+import { dropdownContent } from "@/constants";
+import { TrelloLogo } from "@/constants/TrelloLogo";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const [activeMobileDropdown, setActiveMobileDropdown] = useState<string | null>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setActiveDropdown(null);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  // Close mobile menu on escape key
+  useEffect(() => {
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape" && isMenuOpen) {
+        setIsMenuOpen(false);
+      }
+    };
+
+    document.addEventListener("keydown", handleEscape);
+    return () => document.removeEventListener("keydown", handleEscape);
+  }, [isMenuOpen]);
+
+  const toggleDropdown = (dropdown: string) => {
+    setActiveDropdown(activeDropdown === dropdown ? null : dropdown);
+  };
+
+  const toggleMobileDropdown = (dropdown: string) => {
+    setActiveMobileDropdown(activeMobileDropdown === dropdown ? null : dropdown);
+  };
+
+  // Navigation configuration
+  const navItems = [
+    { label: "Features", key: "features", items: dropdownContent.features },
+    { label: "Solutions", key: "solutions", items: dropdownContent.solutions },
+    { label: "Plans", key: "plans", items: dropdownContent.plans },
+    { label: "Pricing" },
+    { label: "Resources", key: "resources", items: dropdownContent.resources },
+  ];
 
   return (
-    <header className="bg-white shadow-md fixed top-0 w-full z-50">
-      <nav className="flex justify-between items-center px-3">
+    <header className="bg-background shadow-sm fixed top-0 w-full z-50 border-b border-border">
+      <nav 
+        className="flex justify-between items-center px-3 relative" 
+        ref={dropdownRef}
+        aria-label="Main navigation"
+      >
         {/* Logo and Desktop Navigation */}
         <div className="flex items-center gap-8">
-          <Link href="" className="">
-            <svg
-              aria-label="Atlassian Trello"
-              height="37.5"
-              role="img"
-              viewBox="0 0 312 105"
-              width="111.42857142857143"
-              xmlns="http://www.w3.org/2000/svg"
-              xmlnsXlink="http://www.w3.org/1999/xlink"
-              className="Logo-sc-1anfgcw-0 gguOta"
-            >
-              <linearGradient
-                id="trello-logo-gradient-defaultMJFtCCgVhXrVl7v9HA7EH"
-                x1="49.992%"
-                x2="49.992%"
-                y1="100%"
-                y2=".016%"
-              >
-                <stop offset="0" stopColor="#0052cc"></stop>
-                <stop offset="1" stopColor="#2684ff"></stop>
-              </linearGradient>
-              <path
-                d="m55.3 40.6h-47.5c-4.1 0-7.4 3.3-7.4 7.4v47.6c0 4.1 3.3 7.4 7.4 7.4h47.5c4.1 0 7.4-3.3 7.4-7.4v-47.6c0-4.1-3.3-7.4-7.4-7.4zm-28.1 44.9c0 1.4-1.1 2.5-2.5 2.5h-10.4c-1.4 0-2.5-1.1-2.5-2.5v-30.9c0-1.4 1.1-2.5 2.5-2.5h10.4c1.4 0 2.5 1.1 2.5 2.5zm24-14.2c0 1.4-1.1 2.5-2.4 2.5h-10.5c-1.4 0-2.5-1.1-2.5-2.5v-16.7c0-1.4 1.1-2.5 2.5-2.5h10.4c1.4 0 2.5 1.1 2.5 2.5z"
-                fill="url(#trello-logo-gradient-defaultMJFtCCgVhXrVl7v9HA7EH)"
-              ></path>
-              <g fill="#253858" transform="translate(87 40)">
-                <path d="m42.6 5.2v12.1h-14.3v45.7h-13.8v-45.8h-14.3v-12z"></path>
-                <path d="m60.2 63h-12.7v-45h12.7v8.6c2.4-6.1 6.3-9.7 13.2-9.2v13.3c-9-.7-13.2 1.5-13.2 8.7z"></path>
-                <path d="m143 63.4c-8.4 0-13.6-4-13.6-13.5v-49.3h12.8v47.5c0 2.7 1.8 3.7 4 3.7.6 0 1.3 0 1.9-.1v11.1c-1.7.4-3.4.6-5.1.6z"></path>
-                <path d="m169.8 63.4c-8.4 0-13.6-4-13.6-13.5v-49.3h12.8v47.5c0 2.7 1.8 3.7 4 3.7.6 0 1.3 0 1.9-.1v11.1c-1.7.4-3.4.6-5.1.6z"></path>
-                <path d="m181 40.5c0-13.9 8-23.4 21.8-23.4s21.6 9.5 21.6 23.4-7.9 23.6-21.6 23.6-21.8-9.8-21.8-23.6zm12.5 0c0 6.8 2.8 12.1 9.3 12.1s9.1-5.4 9.1-12.1-2.8-12-9.1-12-9.3 5.2-9.3 12z"></path>
-                <path d="m90.6 44.6c3.6.4 7.2.6 10.7.6 9.8 0 18-2.6 18-12.1 0-9.2-8.5-16.1-18.7-16.1-13.7 0-22.5 10-22.5 23.8 0 14.4 7.6 23 24.7 23 5.1.1 10.1-.8 14.9-2.6v-10.8c-4.4 1.4-9.4 2.8-14.4 2.8-6.8.1-11.5-2.2-12.7-8.6zm9.8-17.7c3.6 0 6.5 2.4 6.5 5.8 0 4.3-4.6 5.7-9.8 5.7-2.2 0-4.5-.2-6.7-.5.2-2.1.8-4.1 1.8-6 1.6-3.1 4.8-5 8.2-5z"></path>
-              </g>
-              <g fill="#0052cc" transform="translate(94)">
-                <path d="m98.9 16.7c0-4-2.6-5.8-7.4-7-3-.8-3.7-1.4-3.7-2.4 0-1.2 1.1-1.8 3.1-1.8 2.4.1 4.8.7 7 1.8v-5c-2.1-1-4.5-1.5-6.8-1.5-5.3 0-8.2 2.5-8.2 6.6 0 3.9 2.6 5.9 7 6.9 3.1.7 4 1.2 4 2.5 0 1-.7 1.8-3 1.8-2.8-.1-5.6-.9-8.1-2.3v5.3c2.5 1.2 5.2 1.9 8 1.9 5.4 0 8.1-2.7 8.1-6.8z"></path>
-                <path d="m159.3 1.2v22h4.7v-16.8l2 4.4 6.6 12.3h5.9v-22h-4.7v14.2l-1.8-4.1-5.3-10.1h-7.4z"></path>
-                <path d="m129.6 1.2h-5.1v22h5.1z"></path>
-                <path d="m43.2 1.2v22h10.5l1.6-4.8h-7v-17.2z"></path>
-                <path d="m22.4 1.2v4.8h5.7v17.2h5.1v-17.2h6.1v-4.8z"></path>
-                <path d="m15 1.2h-6.7l-7.7 22h5.9l1.1-3.7c1.3.4 2.7.6 4.1.6s2.8-.2 4.1-.6l1.1 3.7h5.9zm-3.4 14.3c-1 0-1.9-.1-2.8-.4l2.8-9.6 2.8 9.6c-.9.3-1.8.4-2.8.4z"></path>
-                <path d="m71.7 1.2h-6.7l-7.7 22h5.9l1.1-3.7c1.3.4 2.7.6 4.1.6s2.8-.2 4.1-.6l1.1 3.7h5.9zm-3.3 14.3c-1 0-1.9-.1-2.8-.4l2.8-9.6 2.8 9.6c-.9.3-1.9.4-2.8.4z"></path>
-                <path d="m148 1.2h-6.7l-7.7 22h5.9l1.1-3.7c1.3.4 2.7.6 4.1.6s2.8-.2 4.1-.6l1.1 3.7h5.9zm-3.4 14.3c-1 0-1.9-.1-2.8-.4l2.8-9.6 2.8 9.6c-.9.3-1.8.4-2.8.4z"></path>
-                <path d="m119.2 16.7c0-4-2.6-5.8-7.4-7-3-.8-3.7-1.4-3.7-2.4 0-1.2 1.1-1.8 3-1.8 2.4.1 4.8.7 7 1.8v-5c-2.2-1-4.5-1.5-6.9-1.5-5.3 0-8.2 2.5-8.2 6.6 0 3.9 2.6 5.9 7 6.9 3.1.7 4 1.2 4 2.5 0 1-.7 1.8-3 1.8-2.8-.1-5.6-.9-8.1-2.3v5.3c2.5 1.2 5.2 1.9 8 1.9 5.7 0 8.3-2.7 8.3-6.8z"></path>
-              </g>
-            </svg>
+          <Link href="/" aria-label="Trello Home">
+            <TrelloLogo />
           </Link>
 
           {/* Desktop Navigation */}
-          <ul className="hidden lg:flex list-none items-center gap-8">
-          <li>
-            <Link href="" className="flex items-center gap-1 text-foreground hover:text-primary text-base font-medium">
-              Features
-              <ChevronDown size={12} />
-            </Link>
-          </li>
-          <li>
-            <Link href="" className="flex items-center gap-1 text-foreground hover:text-primary text-base font-medium">
-              Solutions
-              <ChevronDown size={12} />
-            </Link>
-          </li>
-          <li>
-            <Link href="" className="flex items-center gap-1 text-foreground hover:text-primary text-base font-medium">
-              Plans
-              <ChevronDown size={12} />
-            </Link>
-          </li>
-          <li>
-            <Link href="" className="text-foreground hover:text-primary text-base font-medium">Pricing</Link>
-          </li>
-          <li>
-            <Link href="" className="flex items-center gap-1 text-foreground hover:text-primary text-base font-medium">
-              Resources
-              <ChevronDown size={12} />
-            </Link>
-          </li>
+          <ul 
+            className="hidden lg:flex list-none items-center gap-8" 
+            role="menubar"
+          >
+            {navItems.map((item) => (
+              <DesktopNavItem
+                key={item.label}
+                label={item.label}
+                dropdownKey={item.key}
+                activeDropdown={activeDropdown}
+                onToggle={toggleDropdown}
+                items={item.items}
+              />
+            ))}
           </ul>
         </div>
 
         {/* Desktop Actions */}
         <div className="hidden lg:flex items-center gap-4">
-          <Button className="bg-transparent text-foreground hover:text-accent-foreground cursor-pointer text-lg hover:bg-transparent">
-            Login
+          <Button 
+            className="bg-transparent text-foreground hover:text-primary cursor-pointer text-base hover:bg-transparent shadow-none"
+            asChild
+          >
+            <Link href="#">Login</Link>
           </Button>
-          <Link href="" className="bg-primary hover:bg-blue-800 text-white text-base px-8 py-3">
-            Get Trello for free
-          </Link>
+          <Button
+            className="bg-primary hover:bg-primary/90 text-primary-foreground text-base px-8 py-6 rounded-md transition-colors"
+            asChild
+          >
+            <Link href="#">Get Trello for free</Link>
+          </Button>
         </div>
 
         {/* Mobile Menu Button */}
         <button
           onClick={() => setIsMenuOpen(!isMenuOpen)}
-          className="lg:hidden p-4 text-foreground hover:text-primary"
-          aria-label="Toggle menu"
+          className="lg:hidden p-4 text-foreground hover:text-primary transition-colors"
+          aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+          aria-expanded={isMenuOpen}
+          aria-controls="mobile-menu"
         >
-          {isMenuOpen ? <X size={32} className="font-bold text-foreground" /> : <Menu size={32} className="font-bold text-foreground" />}
+          {isMenuOpen ? <X size={32} /> : <Menu size={32} />}
         </button>
       </nav>
 
       {/* Mobile Dropdown Menu */}
-      <div 
-        className={`lg:hidden bg-white shadow-lg overflow-hidden transition-all duration-500 ease-in-out ${
-          isMenuOpen ? 'max-h-[600px] opacity-100' : 'max-h-0 opacity-0'
+      <div
+        id="mobile-menu"
+        className={`lg:hidden bg-background shadow-lg overflow-hidden transition-all duration-500 ease-in-out border-b border-border ${
+          isMenuOpen ? "max-h-[800px] opacity-100" : "max-h-0 opacity-0"
         }`}
+        aria-hidden={!isMenuOpen}
       >
-        <ul className="flex flex-col py-4">
-          <li className="border-b">
-            <Link href="" className={`flex items-center justify-between px-4 py-5 text-foreground hover:bg-gray-50 transition-all duration-300 ${
-              isMenuOpen ? 'translate-y-0 opacity-100' : '-translate-y-2 opacity-0'
-            }`} style={{ transitionDelay: '100ms' }}>
-              Features
-              <ChevronRight size={16} />
-            </Link>
-          </li>
-          <li className="border-b">
-            <Link href="" className={`flex items-center justify-between px-4 py-5 text-foreground hover:bg-gray-50 transition-all duration-300 ${
-              isMenuOpen ? 'translate-y-0 opacity-100' : '-translate-y-2 opacity-0'
-            }`} style={{ transitionDelay: '150ms' }}>
-              Solutions
-              <ChevronRight size={16} />
-            </Link>
-          </li>
-          <li className="border-b">
-            <Link href="" className={`flex items-center justify-between px-4 py-5 text-foreground hover:bg-gray-50 transition-all duration-300 ${
-              isMenuOpen ? 'translate-y-0 opacity-100' : '-translate-y-2 opacity-0'
-            }`} style={{ transitionDelay: '200ms' }}>
-              Plans
-              <ChevronRight size={16} />
-            </Link>
-          </li>
-          <li className="border-b">
-            <Link href="" className={`px-4 py-5 text-foreground hover:bg-gray-50 block transition-all duration-300 ${
-              isMenuOpen ? 'translate-y-0 opacity-100' : '-translate-y-2 opacity-0'
-            }`} style={{ transitionDelay: '250ms' }}>
-              Pricing
-            </Link>
-          </li>
-          <li className="border-b">
-            <Link href="" className={`flex items-center justify-between px-4 py-5 text-foreground hover:bg-gray-50 transition-all duration-300 ${
-              isMenuOpen ? 'translate-y-0 opacity-100' : '-translate-y-2 opacity-0'
-            }`} style={{ transitionDelay: '300ms' }}>
-              Resources
-              <ChevronRight size={16} />
-            </Link>
-          </li>
-          <li className={`px-6 py-3 flex flex-col gap-3 mt-2 transition-all duration-300 ${
-            isMenuOpen ? 'translate-y-0 opacity-100' : '-translate-y-2 opacity-0'
-          }`} style={{ transitionDelay: '350ms' }}>
-            <Link href="" className="w-full bg-primary hover:bg-blue-800 text-white text-lg text-center p-4">
-              Get Trello for free
-            </Link>
-            <Button className="w-full bg-transparent text-foreground border border-primary py-6 text-lg rounded-none">
-              Login
-            </Button>
-          </li>
-        </ul>
+        <nav aria-label="Mobile navigation">
+          <ul className="flex flex-col py-4 list-none" role="menubar">
+            {navItems.map((item, index) => (
+              <MobileNavItem
+                key={item.label}
+                label={item.label}
+                dropdownKey={item.key}
+                activeDropdown={activeMobileDropdown}
+                onToggle={toggleMobileDropdown}
+                items={item.items}
+                isMenuOpen={isMenuOpen}
+                delay={`${(index + 1) * 50 + 50}ms`}
+              />
+            ))}
+
+            {/* Action Buttons Mobile */}
+            <li
+              className={`px-6 py-3 flex flex-col gap-3 mt-2 transition-all duration-300 ${
+                isMenuOpen ? "translate-y-0 opacity-100" : "-translate-y-2 opacity-0"
+              }`}
+              style={{ transitionDelay: "350ms" }}
+              role="none"
+            >
+              <Button
+                className="w-full bg-primary hover:bg-primary/90 text-primary-foreground text-base text-center py-6 rounded-md transition-colors"
+                asChild
+              >
+                <Link href="#">Get Trello for free</Link>
+              </Button>
+              <Button 
+                className="w-full bg-transparent text-foreground border border-border hover:bg-accent py-6 text-base"
+                asChild
+              >
+                <Link href="#">Login</Link>
+              </Button>
+            </li>
+          </ul>
+        </nav>
       </div>
     </header>
   );

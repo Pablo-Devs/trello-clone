@@ -1,9 +1,7 @@
-import { Button } from "@/components/ui/button"
-
 const Page = () => {
   return (
     <div>
-      <Button>Click me!</Button>
+      <h1 className="text-3xl font-bold underline">Hello, Trello!</h1>
     </div>
   )
 }
