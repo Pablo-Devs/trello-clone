@@ -14,6 +14,11 @@ import {
   Lightbulb,
   Star,
   Building2,
+  Instagram,
+  Facebook,
+  Linkedin,
+  Twitter,
+  Youtube,
 } from "lucide-react";
 
 export const dropdownContent = {
@@ -158,3 +163,18 @@ export const navOrder = [
   { type: "link", key: "Pricing", href: "/pricing" },
   { type: "dropdown", key: "Resources" },
 ] as const;
+
+export const footerNavLinks = [
+  { title: "About Trello", description: "What's behind the boards.", link: "/about" },
+  { title: "Jobs", description: "Lean about open roles on the Trello team.", link: "/jobs" },
+  { title: "Apps", description: "Download the Trello app for your Desktop or Mobile devices.", link: "#" },
+  { title: "Contact us", description: "Need anything? Get in touch and we can help.", link: "/contact-us" },
+]
+
+export const socialMediaLinks = [
+  { tooltip: "Instagram", icon: Instagram, link: "www.instagram.com/" },
+  { tooltip: "Facebook", icon: Facebook, link: "www.facebook.com/" },
+  { tooltip: "LinkedIn", icon: Linkedin, link: "www.linkedin.com/" },
+  { tooltip: "Twittwer", icon: Twitter, link: "www.x.com/" },
+  { tooltip: "Youtube", icon: Youtube, link: "www.youtube.com/" },
+]
