@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import { Info, SquareArrowOutUpRight } from "lucide-react";
 import Image from "next/image";
 import { Label } from "@/components/ui/label";
