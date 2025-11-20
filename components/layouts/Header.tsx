@@ -10,7 +10,7 @@ import {
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import { TrelloLogo } from "@/constants/TrelloLogo";
+import { TrelloLogo } from "@/constants/Logos";
 import Link from "next/link";
 import { Button } from "../ui/button";
 import { LucideIcon, Menu } from "lucide-react";

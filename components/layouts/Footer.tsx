@@ -1,5 +1,5 @@
 import { footerNavLinks, socialMediaLinks } from "@/constants";
-import { TrelloWhiteLogo } from "@/constants/TrelloLogo";
+import { TrelloWhiteLogo } from "@/constants/Logos";
 import { Globe, LucideIcon } from "lucide-react";
 import Link from "next/link";
 import {
