@@ -1,5 +1,7 @@
 import { LucideIcon } from "lucide-react";
 
+export type AuthProvider = "google" | "azure" | "apple" | "slack"
+
 export interface DropdownItem {
   title: string;
   description: string;
