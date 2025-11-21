@@ -7,6 +7,8 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
+import { Spinner } from "@/components/ui/spinner";
+import { toast } from "sonner";
 import Link from "next/link";
 import {
   AppleLogo,
@@ -16,9 +18,82 @@ import {
   SlackLogo,
   TrelloIcon,
 } from "@/constants/Logos";
+import { signInWithOAuth, signUpWithEmail } from "@/lib/services/auth";
+import { AuthProvider } from "@/types";
 
 const SignIn = () => {
   const [email, setEmail] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [touched, setTouched] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
+
+  const validateEmail = (value: string): string => {
+    if (!value.trim()) {
+      return "Email is required";
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(value)) {
+      return "Please enter a valid email address";
+    }
+
+    return "";
+  };
+
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setEmail(value);
+
+    if (touched) {
+      setEmailError(validateEmail(value));
+    }
+  };
+
+  const handleEmailBlur = () => {
+    setTouched(true);
+    setEmailError(validateEmail(email));
+  };
+
+  const isFormValid = (): boolean => {
+    return email.trim() !== "" && validateEmail(email) === "";
+  };
+
+  async function handleEmailSignIn() {
+    setTouched(true);
+    const error = validateEmail(email);
+
+    if (error) {
+      setEmailError(error);
+      return;
+    }
+
+    try {
+      setLoading(true);
+      await signUpWithEmail(email);
+      toast.success("Success! Check your email for a login link.");
+    } catch (err: unknown) {
+      toast.error(
+        err instanceof Error
+          ? err.message
+          : "An unexpected error occurred. Please try again."
+      );
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function handleOAuth(provider: AuthProvider) {
+    try {
+      await signInWithOAuth(provider);
+    } catch (err: unknown) {
+      toast.error(
+        err instanceof Error
+          ? err.message
+          : "An unexpected error occurred. Please try again."
+      );
+    }
+  }
 
   return (
     <main className="min-h-screen w-full bg-linear-to-b from-background to-background/20 relative overflow-hidden">
@@ -63,27 +138,44 @@ const SignIn = () => {
               type="email"
               placeholder="Enter your email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full py-2 px-2 text-sm rounded-none h-10"
+              onChange={handleEmailChange}
+              onBlur={handleEmailBlur}
+              className={`w-full py-2 px-2 text-sm rounded-none h-10 ${
+                emailError ? "border-red-500 focus:ring-red-500" : ""
+              }`}
+              aria-invalid={!!emailError}
+              aria-describedby={emailError ? "email-error" : undefined}
             />
+            {emailError && (
+              <p id="email-error" className="text-red-500 text-xs mt-1">
+                {emailError}
+              </p>
+            )}
           </div>
 
           <div className="flex items-center gap-2 mb-4">
             <Checkbox
               id="remember"
+              checked={rememberMe}
+              onCheckedChange={(checked) => setRememberMe(checked as boolean)}
               className="w-4 h-4 rounded"
             />
             <Label
               htmlFor="remember"
-              className="text-sm text-foreground flex items-center gap-1"
+              className="text-sm text-foreground flex items-center gap-1 cursor-pointer"
             >
               Remember me
               <Info className="w-4 h-4 text-primary" />
             </Label>
           </div>
 
-          <Button className="w-full bg-primary text-primary-foreground font-medium py-5 rounded cursor-pointer transition-colors mb-4">
-            Continue
+          <Button
+            onClick={handleEmailSignIn}
+            disabled={loading || !isFormValid()}
+            className="w-full bg-primary text-primary-foreground font-medium py-5 rounded cursor-pointer transition-colors mb-4 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {loading && <Spinner />}
+            {loading ? "Signing in..." : "Continue"}
           </Button>
 
           <div className="relative my-6">
@@ -100,6 +192,7 @@ const SignIn = () => {
           <div className="space-y-3 mb-6">
             <Button
               variant="outline"
+              onClick={() => handleOAuth("google")}
               className="w-full flex items-center justify-center gap-3 py-5 rounded-none cursor-pointer"
             >
               <GoogleLogo />
@@ -110,6 +203,7 @@ const SignIn = () => {
 
             <Button
               variant="outline"
+              onClick={() => handleOAuth("azure")}
               className="w-full flex items-center justify-center gap-3 py-5 rounded-none cursor-pointer"
             >
               <MicrosoftLogo />
@@ -120,6 +214,7 @@ const SignIn = () => {
 
             <Button
               variant="outline"
+              onClick={() => handleOAuth("apple")}
               className="w-full flex items-center justify-center gap-3 py-5 rounded-none cursor-pointer"
             >
               <AppleLogo />
@@ -130,6 +225,7 @@ const SignIn = () => {
 
             <Button
               variant="outline"
+              onClick={() => handleOAuth("slack")}
               className="w-full flex items-center justify-center gap-3 py-5 rounded-none cursor-pointer"
             >
               <SlackLogo />
@@ -144,7 +240,7 @@ const SignIn = () => {
               Can&apos;t log in?
             </Link>
             <span className="mx-2 text-foreground/70">•</span>
-            <Link href="#" className="text-primary hover:underline">
+            <Link href="/signup" className="text-primary hover:underline">
               Create an account
             </Link>
           </div>
@@ -180,7 +276,7 @@ const SignIn = () => {
               </Link>
             </div>
             <div className="text-xs text-foreground mt-2">
-              <p>This site is protected by reCAPTCHA and the Google{" "}</p>
+              <p>This site is protected by reCAPTCHA and the Google </p>
               <div className="flex items-center gap-1">
                 <Link
                   href="#"
