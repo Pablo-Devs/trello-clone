@@ -3,7 +3,7 @@
 import Hero from "@/components/sections/Hero";
 import Link from "next/link";
 
-const Page = () => {
+const Homepage = () => {
   return (
     <main>
       <div className="bg-chart-1/20 w-full py-4 px-8">
@@ -22,4 +22,4 @@ const Page = () => {
   );
 };
 
-export default Page;
+export default Homepage;
