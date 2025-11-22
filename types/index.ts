@@ -10,6 +10,15 @@ export interface User {
   };
 }
 
+export type WorkspaceType = {
+  id: string;
+  name: string;
+};
+
+export type SidebarProps = {
+  workspaceTypes: WorkspaceType[];
+};
+
 export interface DropdownItem {
   title: string;
   description: string;
