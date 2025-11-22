@@ -1,15 +1,19 @@
-import React from "react"
-import { Toaster } from "@/components/ui/sonner"
-import Navbar from "@/components/layouts/Navbar"
+import React from "react";
+import { Toaster } from "@/components/ui/sonner";
+import Navbar from "@/components/layouts/Navbar";
+import Sidebar from "@/components/layouts/Sidebar";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <main>
+    <main className="flex flex-col h-screen">
       <Navbar />
-        { children }
-        <Toaster />
+      <div className="flex flex-1 overflow-hidden">
+        <Sidebar />
+        <div className="flex-1 overflow-y-auto py-18 pl-18 pr-10">{children}</div>
+      </div>
+      <Toaster />
     </main>
-  )
-}
+  );
+};
 
-export default Layout
+export default Layout;
