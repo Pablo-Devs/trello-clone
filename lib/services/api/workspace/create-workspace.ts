@@ -54,11 +54,9 @@ export async function createWorkspace(formData: FormData) {
 
   if (memberError) {
     console.error("createWorkspace -> insert member error:", memberError);
-    // optionally rollback workspace — for now throw
     throw new Error(memberError.message);
   }
 
-  revalidatePath("/workspace");
-  // redirect to the workspace page
-  redirect(`/workspace/${workspaceId}`);
+  revalidatePath("/boards");
+  redirect(`/boards`);
 }
