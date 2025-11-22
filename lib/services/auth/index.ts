@@ -26,3 +26,20 @@ export async function signInWithOAuth(provider: AuthProvider) {
   if (error) throw error;
   return data;
 }
+
+export async function getUser() {
+  const { data, error } = await supabase.auth.getUser();
+  
+  if (error) {
+    console.error("Error fetching user:", error);
+    return null;
+  }
+  
+  return data.user;
+}
+
+export async function signOut() {
+  const { error } = await supabase.auth.signOut();
+  
+  if (error) throw error;
+}
