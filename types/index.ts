@@ -15,6 +15,26 @@ export type WorkspaceType = {
   name: string;
 };
 
+export interface Workspace {
+  id: string;
+  name: string;
+  description: string | null;
+  type_id: string | null;
+  owner_id: string;
+  created_at: string;
+  workspace_types?: WorkspaceType;
+}
+
+export interface WorkspaceMemberRow {
+  role: "owner" | "admin" | "member";
+  workspaces: Workspace;
+}
+
+export interface CreateWorkspaceDialogProps {
+  workspaceTypes: WorkspaceType[];
+  trigger: React.ReactNode;
+}
+
 export type SidebarProps = {
   workspaceTypes: WorkspaceType[];
 };
