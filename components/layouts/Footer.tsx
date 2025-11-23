@@ -1,3 +1,5 @@
+"use client"
+
 import { footerNavLinks, socialMediaLinks } from "@/constants";
 import { TrelloWhiteLogo } from "@/constants/Logos";
 import { Globe, LucideIcon } from "lucide-react";
