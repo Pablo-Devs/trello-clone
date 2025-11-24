@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { footerNavLinks, socialMediaLinks } from "@/constants";
 import { TrelloWhiteLogo } from "@/constants/Logos";
@@ -13,7 +13,6 @@ import {
 } from "@/components/ui/select";
 
 const Footer = () => {
-  const currentYear = new Date().getFullYear()
   return (
     <footer className="w-full bg-[#172b4d] text-background flex flex-col">
       <section className="pt-4 pb-8 px-4 lg:px-[120px] lg:pt-4 lg:pb-4 flex flex-col lg:flex-row space-x-4 lg:space-x-8">
@@ -83,7 +82,7 @@ const Footer = () => {
               href="/notice"
               className="text-xs lg:text-sm font-semibold hover:underline transition-all duration-300"
             >
-              Copyright &copy; { currentYear } Atlassian
+              Copyright &copy; {new Date().getFullYear()} Atlassian
             </Link>
           </div>
         </div>

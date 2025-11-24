@@ -64,13 +64,13 @@ export const TrelloWhiteLogo = () => (
         y1="100%"
         y2=".016%"
       >
-        <stop offset="0%" stop-color="#ffffff" stop-opacity=".5"></stop>
-        <stop offset="15%" stop-color="#ffffff" stop-opacity=".65"></stop>
-        <stop offset="30%" stop-color="#ffffff" stop-opacity=".78"></stop>
-        <stop offset="46%" stop-color="#ffffff" stop-opacity=".88"></stop>
-        <stop offset="62%" stop-color="#ffffff" stop-opacity=".95"></stop>
-        <stop offset="80%" stop-color="#ffffff" stop-opacity=".99"></stop>
-        <stop offset="100%" stop-color="#ffffff"></stop>
+        <stop offset="0%" stopColor="#ffffff" stopOpacity=".5"></stop>
+        <stop offset="15%" stopColor="#ffffff" stopOpacity=".65"></stop>
+        <stop offset="30%" stopColor="#ffffff" stopOpacity=".78"></stop>
+        <stop offset="46%" stopColor="#ffffff" stopOpacity=".88"></stop>
+        <stop offset="62%" stopColor="#ffffff" stopOpacity=".95"></stop>
+        <stop offset="80%" stopColor="#ffffff" stopOpacity=".99"></stop>
+        <stop offset="100%" stopColor="#ffffff"></stop>
       </linearGradient>
     </defs>
     <path
