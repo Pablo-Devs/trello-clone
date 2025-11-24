@@ -3,16 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import {
-  Home,
-  LayoutTemplate,
-  Plus,
-  Trello,
-  ChevronDown,
-  ChevronUp,
-  Users,
-  Settings as SettingsIcon,
-} from "lucide-react";
+import { Home, LayoutTemplate, Plus, Trello, ChevronDown, ChevronUp, Users, Settings as SettingsIcon } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -31,17 +22,18 @@ const Sidebar = ({ workspaceTypes }: SidebarProps) => {
   const pathname = usePathname();
   const [workspaces, setWorkspaces] = useState<Workspace[]>([]);
   const [loading, setLoading] = useState(true);
-  const [expandedWorkspace, setExpandedWorkspace] = useState<string | null>(
-    null
-  );
+  const [expandedWorkspace, setExpandedWorkspace] = useState<string | null>(null);
 
   useEffect(() => {
     async function fetchWorkspaces() {
       try {
-        const response = await fetch("/api/workspace");
+        const response = await fetch("/api/workspace", {
+          cache: "no-store",
+        });
         const data = await response.json();
         if (data.workspaces) {
           setWorkspaces(data.workspaces);
+          // Auto-expand first workspace if available
           if (data.workspaces.length > 0) {
             setExpandedWorkspace(data.workspaces[0].id);
           }
@@ -68,9 +60,7 @@ const Sidebar = ({ workspaceTypes }: SidebarProps) => {
   };
 
   const toggleWorkspace = (workspaceId: string) => {
-    setExpandedWorkspace(
-      expandedWorkspace === workspaceId ? null : workspaceId
-    );
+    setExpandedWorkspace(expandedWorkspace === workspaceId ? null : workspaceId);
   };
 
   return (
@@ -165,7 +155,7 @@ const Sidebar = ({ workspaceTypes }: SidebarProps) => {
                     <Link href={`/workspace/${workspace.id}/boards`}>
                       <Button
                         variant="ghost"
-                        className={`w-full justify-start h-9 px-3 text-sm cursor-pointer ${
+                        className={`w-full justify-start h-9 px-3 text-sm ${
                           pathname.includes(`/workspace/${workspace.id}/boards`)
                             ? "bg-primary/10 text-primary hover:bg-primary/20"
                             : "text-foreground/80 hover:bg-accent"
@@ -179,10 +169,8 @@ const Sidebar = ({ workspaceTypes }: SidebarProps) => {
                     <Link href={`/workspace/${workspace.id}/members`}>
                       <Button
                         variant="ghost"
-                        className={`w-full justify-between h-9 px-3 text-sm cursor-pointer ${
-                          pathname.includes(
-                            `/workspace/${workspace.id}/members`
-                          )
+                        className={`w-full justify-between h-9 px-3 text-sm ${
+                          pathname.includes(`/workspace/${workspace.id}/members`)
                             ? "bg-primary/10 text-primary hover:bg-primary/20"
                             : "text-foreground/80 hover:bg-accent"
                         }`}
@@ -198,10 +186,8 @@ const Sidebar = ({ workspaceTypes }: SidebarProps) => {
                     <Link href={`/workspace/${workspace.id}/settings`}>
                       <Button
                         variant="ghost"
-                        className={`w-full justify-start h-9 px-3 text-sm cursor-pointer ${
-                          pathname.includes(
-                            `/workspace/${workspace.id}/settings`
-                          )
+                        className={`w-full justify-start h-9 px-3 text-sm ${
+                          pathname.includes(`/workspace/${workspace.id}/settings`)
                             ? "bg-primary/10 text-primary hover:bg-primary/20"
                             : "text-foreground/80 hover:bg-accent"
                         }`}

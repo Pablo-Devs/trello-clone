@@ -116,13 +116,13 @@ export default function Header() {
           className="bg-transparent text-foreground hover:text-primary cursor-pointer text-base hover:bg-transparent shadow-none"
           asChild
         >
-          <Link href="#">Login</Link>
+          <Link href="/signin">Login</Link>
         </Button>
         <Button
           className="bg-primary hover:bg-primary/90 text-primary-foreground text-base px-8 py-8 rounded-none transition-colors"
           asChild
         >
-          <Link href="#">Get Trello for free</Link>
+          <Link href="/signup">Get Trello for free</Link>
         </Button>
       </div>
       {/* Mobile Menu */}
